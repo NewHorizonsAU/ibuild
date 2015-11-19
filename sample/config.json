@@ -1,0 +1,25 @@
+{
+    "push_server": {
+        "url_publish": "http://localhost:8080/publish",
+        "url": "ws://localhost:8080/ws",
+        "realm": "realm1",
+        "prefix": "ibuild",
+        "topic_repo_update": "update.repo",
+        "topic_build": "build.task"
+    },
+    "logfile": "/home/alt/ibuild.txt",
+    "bin_dir": "/srv/ftp/",
+    "repo_list": {
+        "ibuild":"ssh://git@gitserver:/ibuild.git",
+        "abc":"ssh://git@gitserver:/abc.git"
+        },
+    "task": [
+    {
+        "name": "ibuild",
+        "workspace": "/home/alt/workspace/",
+        "cmd_clean": "echo clean",
+        "cmd_build": "echo build_begin; sleep 2; echo build_end",
+        "repo_list": [["ibuild", "master"], ["abc", "master"]]
+    }
+    ]
+}

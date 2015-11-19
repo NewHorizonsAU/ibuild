@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% block title %}{{title}}{% endblock %}
+{% block head %}
+    <script src="js/autobahn.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+    var pusher = new autobahn.Connection({
+        url: "{{ config['push_server']['url'] }}",
+        realm: "{{ config['push_server']['realm'] }}"
+    });
+    build_msg = ""
+    function refresh_output() {
+        setTimeout("refresh_output()", 100)
+        if(build_msg == ""){
+            return
+        }
+        build_info = document.getElementById('build_info');
+        build_info.innerHTML += build_msg
+        build_msg = ""
+        jQuery( function(){
+            var pre = jQuery("#build_info");
+            pre.scrollTop( pre.prop("scrollHeight")  );
+            } );
+    }
+    $(document).ready(function(){
+        pusher.onopen = function (session) {
+            console.log("session open");
+            refresh_output()
+            function on_build(args) {
+                build_msg += args[0]
+            }
+            session.subscribe('{{ config["push_server"]["prefix"] }}.build.{{ task }}', on_build)
+            };
+        pusher.open();
+        jQuery( function(){
+            var pre = jQuery("#build_info");
+            pre.scrollTop( pre.prop("scrollHeight")  );
+            } );
+ 
+    });
+    </script>
+  {{ super() }}
+{% endblock %}
+
+{% block page %}{{title}}{% endblock %}
+{% block heading %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                  <h1 class="page-header"></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-red">
+                        <div class="panel-heading">
+                            change log
+                        </div>
+                        <div class="panel-body">
+                            <pre style="height:8pc">{{change_log}}</pre>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="panel panel-green">
+                        <div class="panel-heading">
+                            repo list
+                        </div>
+                        <div class="panel-body">
+                               <div class="table-responsive" style="height: 8.7pc; overflow: auto;">
+                                   <table class="table table-bordered table-hover table-striped">
+                                       <thead>
+                                           <tr>
+                                               <th>Repo</th>
+                                               <th>Branch</th>
+                                           </tr>
+                                       </thead>
+                                       <tbody>
+                                           {% for repo in repo_lists %}
+                                           <tr>
+                                               <td><a href="repo?name={{ repo[0] }}">{{ repo[0] }}</a></td>
+                                               <td>{{ repo[1] }}</td>
+                                           </tr>
+                                           {% endfor %}
+                                       </tbody>
+                                   </table>
+                               </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            output for build
+                        </div>
+                        <div class="panel-body">
+                            <pre style="height:12pc" id="build_info">{{build_info}}</pre>
+                        </div>
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+{% endblock %}
+

@@ -1,0 +1,5 @@
+# Python 2.6 compatibility
+# argparse==1.2.1
+autobahn==0.10.4
+Twisted
+Flask

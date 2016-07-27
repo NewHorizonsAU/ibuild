@@ -156,7 +156,7 @@ class BuildController(object):
     def _task_update_repo(self, config_repo):
         DEVNULL = open(os.devnull, 'wb')
         subprocess.call(
-            'cd %s; git stash; git fetch; git checkout -f %s; git pull -f' % (
+            'cd %s;git stash;git fetch;git checkout -f %s;git pull -f;sync' % (
                 config_repo["dir"], config_repo["branch"]),
             shell=True, stdout=DEVNULL, stderr=DEVNULL)
 

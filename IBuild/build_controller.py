@@ -59,7 +59,7 @@ class BuildController(object):
     def on_update(self, update_info):
         # update_info: {"repo":repo, "branch": branch}
         repo = update_info["repo"].lower()
-        branch = update_info["branch"].lower()
+        branch = update_info["branch"]
         repo_branch = repo + '.' + branch
         if repo_branch in self.flag_repo:
             self.flag_repo[repo_branch] = True

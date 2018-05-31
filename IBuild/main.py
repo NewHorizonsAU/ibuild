@@ -46,7 +46,7 @@ URL: <{url}>
         help='config file')
     arg_parser.add_argument(
         'command',
-        choices=['watch', 'build', 'clean', 'init', 'web'], nargs='?',
+        choices=['watch', 'build', 'clean', 'init', 'web', 'i5app'], nargs='?',
         help='the command to run')
     arg_parser.add_argument(
         'task', nargs='?',
@@ -75,6 +75,9 @@ URL: <{url}>
     elif args.command == "watch":
         import task_watch
         task_watch.run(config_info, build_controller)
+    elif args.command == "i5app":
+        import task_i5app
+        task_i5app.run(config_info)
     elif args.command == "web":
         import flask_app
         flask_app.run(config_info)

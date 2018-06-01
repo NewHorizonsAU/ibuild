@@ -31,7 +31,8 @@ class Component(ApplicationSession):
             print("Got event on update: {}".format(_i))
             cmd = '/home/alt/workspace/ibuild-i5/i5os/build.py'
             subprocess.Popen(
-                '%s %s %s %s' % (cmd, _i['repo'], _i['branch'], _i['new']),
+                '%s build %s %s %s' % (
+                    cmd, _i['repo'].lower(), _i['branch'], _i['new']),
                 shell=True)
 
         topic = "%s.%s" % (

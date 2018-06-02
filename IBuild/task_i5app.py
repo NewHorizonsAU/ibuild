@@ -28,7 +28,7 @@ class Component(ApplicationSession):
         print("session attached")
 
         def on_update(_i):
-            print("Got event on update: {}".format(_i))
+            # print("Got event on update: {}".format(_i))
             cmd = '/home/alt/workspace/ibuild-i5/i5os/build.py'
             subprocess.Popen(
                 'python3 %s build %s %s %s' % (
